@@ -1,16 +1,15 @@
 # 📊 Telecom X – Parte 2: Predicción de Cancelación (Churn)
 ## ⚙️ Instalación rápida
-1) (Opcional) crear un entorno virtual
+Instalar dependencias mínimas
 ```bash
-python -m venv venv
-# Linux/Mac
-source venv/bin/activate
-# Windows
-venv\Scripts\activate
-```
-2) Instalar dependencias mínimas
-```bash
-pip install pandas numpy scikit-learn imbalanced-learn matplotlib seaborn
+pip
+install
+pandas
+numpy
+scikit-learn
+imbalanced-learn
+matplotlib
+seaborn
 ```
 
 
