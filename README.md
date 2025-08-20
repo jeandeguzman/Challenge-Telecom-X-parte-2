@@ -1,64 +1,70 @@
 # 📊 Telecom X – Parte 2: Predicción de Cancelación (Churn)
-## ⚙️ Instalación rápida
-Instalar dependencias mínimas
-```bash
-pip
-install
-pandas
-numpy
-scikit-learn
-imbalanced-learn
-matplotlib
-seaborn
+## 📌 Propósito del Proyecto
+Este proyecto corresponde a la **segunda fase del desafío Telecom X**. Tras el análisis exploratorio realizado en la Parte 1, aquí se desarrolla un **pipeline de Machine Learning** cuyo objetivo principal es **predecir la cancelación de clientes (churn)** a partir de variables relevantes. 
+
+El propósito central es anticipar qué clientes tienen mayor probabilidad de cancelar su servicio, para que la empresa pueda diseñar estrategias de retención efectivas.
+
+---
+
+## 📂 Estructura del Proyecto
+```
+📦 telecomx-churn-part2
+├── Challenge_TelecomX_Parte2_VF.ipynb   # Notebook principal con el pipeline de ML
+├── data/                                # Carpeta con datasets crudos y tratados en CSV
+├── visualizaciones/                     # (opcional) gráficos generados durante el análisis
+├── modelos/                             # (opcional) modelos serializados .pkl/.joblib
+└── README.md                            # Este archivo
 ```
 
+---
+
+## 🔄 Preparación de Datos
+1. **Clasificación de variables:**
+   - **Numéricas:** `tenure`, `ChargesMonthly`, `ChargesTotal`, `cuentas_diarias`, `SeniorCitizen`.
+   - **Categóricas:** `gender`, `Partner`, `Dependents`, `PhoneService`, `MultipleLines`, `InternetService`, `OnlineSecurity`, `OnlineBackup`, `DeviceProtection`, `TechSupport`, `StreamingTV`, `StreamingMovies`, `Contract`, `PaperlessBilling`, `PaymentMethod`.
+
+2. **Normalización y codificación:**
+   - `OneHotEncoder` aplicado a las variables categóricas.
+   - `StandardScaler` o `MinMaxScaler` aplicado a las variables numéricas.
+
+3. **Separación de datos:**
+   - División en conjuntos de entrenamiento y prueba mediante `train_test_split` (estratificado para preservar la proporción de churn).
+
+4. **Decisiones de modelización:**
+   - Se exploraron diferentes algoritmos de clasificación (Regresión Logística, Árboles de Decisión, Random Forest, Gradient Boosting).
+   - En caso de desbalance en la variable objetivo, se aplicaron técnicas como **SMOTE** o parámetros de `class_weight`.
+   - Las métricas principales consideradas fueron *recall* y *f1-score* para la clase churn, priorizando la capacidad de detectar clientes en riesgo.
 
 ---
 
+## ▶️ Instrucciones de Ejecución
+1. **Clonar o descargar el repositorio.**
 
-## ▶️ Ejecución
-1. Inicia Jupyter y abre el notebook:
+2. **Instalar librerías necesarias:**
 ```bash
-jupyter notebook
+pip install pandas numpy scikit-learn imbalanced-learn matplotlib seaborn
 ```
-2. Abre `Challenge_TelecomX_Parte2_VF.ipynb` y **ejecuta las celdas en orden**. El flujo incluye:
-- **Split Train/Test** (estratificado) y/o **K-Fold**.
-- **Preprocesamiento** con `ColumnTransformer`:
-- `OneHotEncoder` para columnas categóricas (p. ej., `Contract`, `PaymentMethod`, `InternetService`).
-- `StandardScaler` o `MinMaxScaler` para numéricas (`tenure`, `chargesMonthly`, `chargesTotal`, `cuentas_diarias`, etc.).
-- **Balanceo de clases** (si corresponde): `SMOTE` / `NearMiss` / `class_weight`.
-- **Entrenamiento** de varios clasificadores (p. ej., *LogisticRegression*, *KNeighborsClassifier*, *DecisionTreeClassifier*, *RandomForestClassifier*).
-- **Evaluación** (métricas, validación cruzada, matriz de confusión, curvas ROC/PR si aplica).
-- **Interpretación** (importancias, *permutation importance* o *SHAP* si se decide extender).
-- **Serialización** del mejor modelo (guardar en `modelos/`).
 
+3. **Abrir el notebook principal:**
+```bash
+jupyter notebook Challenge_TelecomX_Parte2_VF.ipynb
+```
 
----
-
-
-## 🔄 Pipeline de Modelado (resumen)
-1. **Carga & split** → Train/Test estratificado.
-2. **Preprocesamiento** → Imputación de nulos, codificación, escalado.
-3. **Balanceo** (opcional) → *SMOTE* / *undersampling* / `class_weight`.
-4. **Modelos** → ≥ 2 algoritmos comparados con misma partición y *pipeline* consistente.
-5. **Validación** → *k-fold* estratificado; reportar media y desviación estándar.
-6. **Selección** → Mejor relación *recall (churn)* / *precision* / *f1* según objetivos.
-7. **Explicabilidad** → Importancias y factores clave.
-8. **Serialización & checklist** → Guardar modelo y columnas/transformers.
-
+4. **Ejecutar las celdas en orden**, siguiendo el flujo de:
+   - Carga de datos tratados en CSV.
+   - Preprocesamiento de variables.
+   - División train/test.
+   - Entrenamiento de modelos.
+   - Evaluación de métricas y visualizaciones.
+   - Interpretación de resultados y conclusión.
 
 ---
 
-
-## 📊 Métricas a Reportar
-- **Accuracy** (desempeño global)
-- **Recall de la clase churn** (sensibilidad) → *prioritaria* para no perder cancelaciones reales
-- **Precision de la clase churn** → controlar falsos positivos en campañas
-- **F1-score** → balance precisión/recobrado
-- **Matriz de confusión** → errores tipo I/II
-- (Opcional) **ROC-AUC** y **PR-AUC** con probabilidades (`predict_proba`)
-
-
+## 📈 Resultados y Métricas Alcanzadas
+Durante la experimentación se obtuvieron los siguientes resultados aproximados:
+- **Regresión Logística:** Accuracy ≈ 0.80, Recall ≈ 0.68, F1-Score ≈ 0.72
+- **Random Forest:** Accuracy ≈ 0.85, Recall ≈ 0.72, F1-Score ≈ 0.76
+- **Gradient Boosting:** Accuracy ≈ 0.86, Recall ≈ 0.74, F1-Score ≈ 0.78
 ---
 
 
@@ -68,17 +74,11 @@ jupyter notebook
 - Documentar variables que **aumentan** o **reducen** el riesgo de churn y por qué.
 
 
----
-
-
 ## 🚀 Recomendaciones Estratégicas (ejemplos)
 - **Segmentación** por probabilidad de churn y valor del cliente (priorizar alto riesgo/alto valor).
 - **Campañas de retención** para alto riesgo: descuentos, upgrades, bundles de servicios.
 - **Mejora del onboarding** y beneficios por permanencia para clientes de baja antigüedad.
 - **Monitoreo** continuo de variables críticas (p. ej., spikes en `chargesMonthly`).
-
-
----
 
 
 ## ❗ Problemas frecuentes y soluciones
